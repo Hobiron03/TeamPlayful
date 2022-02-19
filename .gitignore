@@ -14,9 +14,18 @@
 !/[Aa]ssets/**/*.meta
 
 !/[Aa]ssets/mmmm/
+TeamPlayfuliOS/
 
 Assets/mmmm/
 Assets/mmmm.meta
+Assets/Photon.meta
+Assets/Photon/
+Assets/TextMesh Pro.meta
+Assets/TextMesh Pro/
+Assets/Free Stylized Skybox.meta
+Assets/Free Stylized Skybox/
+Assets/Fonts
+Assets/Fonts.meta
 
 Assets/Plugins.meta
 Assets/Plugins/
