@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 474361663}
   m_LocalRotation: {x: -0.0011943596, y: 0.71672714, z: 0.6973517, w: -0.001227544}
-  m_LocalPosition: {x: -0.039, y: -1.651, z: 1.492}
+  m_LocalPosition: {x: -0.044, y: -0.106, z: 1.254}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3311090871111814602}
@@ -529,7 +529,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3311090871111814602
 Transform:
   m_ObjectHideFlags: 0
@@ -638,9 +638,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GameController: {fileID: 0}
+  avatarsController: {fileID: 0}
   TPSCamera: {fileID: 474361663}
   displayNameText: {fileID: 581016113}
-  isOperateable: 1
   nameCanvas: {fileID: 1298223532}
 --- !u!114 &4396882494483176693
 MonoBehaviour:

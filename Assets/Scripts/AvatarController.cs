@@ -8,9 +8,11 @@ using Photon.Pun;
 using TMPro;
 using UnityEngine;
 
-public class AvatarController : MonoBehaviourPunCallbacks {
+public class AvatarController : MonoBehaviourPunCallbacks
+{
 
     public GameObject GameController;
+    public AvtarsController avatarsController;
 
     private string name;
     private string hobby;
@@ -27,82 +29,128 @@ public class AvatarController : MonoBehaviourPunCallbacks {
 
     public TextMeshProUGUI displayNameText;
 
-    public bool isOperateable = true;
+    private bool isOperateable = false;
 
     public GameObject nameCanvas;
 
     // Start is called before the first frame update
-    void Start () {
+    void Start ()
+    {
         SetName (photonView.Owner.NickName);
         GameController = GameObject.Find ("GameController");
+        avatarsController = GameObject.Find ("Avatars").GetComponent<AvtarsController> ();
         GameController.GetComponent<GameController> ().UpdateParticipantNum ();
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update ()
+    {
         moveTimer += Time.deltaTime;
-        if (photonView.IsMine) {
-            if (isOperateable) {
-                if (Input.GetKeyDown (KeyCode.Space) || IsShake ()) {
-                    photonView.RPC (nameof (MoveStraight), RpcTarget.All);
+        if (photonView.IsMine)
+        {
+            if (isOperateable)
+            {
+                if (IsShake ())
+                {
+                    //ここを変えることでみんなで動けるようにする
+                    photonView.RPC (nameof (ConveyAvatarsContorollerShake), RpcTarget.All);
                 }
             }
         }
     }
 
-    public string returnName () {
+    public string returnName ()
+    {
         return name;
     }
 
-    bool IsShake () {
+    public void EnableOperation ()
+    {
+        isOperateable = true;
+    }
+
+    public void DisableOperation ()
+    {
+        isOperateable = false;
+    }
+
+    bool IsShake ()
+    {
         preAcceleration = acceleration;
         acceleration = Input.acceleration;
         dotProduct = Vector3.Dot (acceleration, preAcceleration);
-        if (dotProduct < 0) {
+        if (dotProduct < 0)
+        {
             return true;
         }
         return false;
     }
 
-    public void toggleOperateState () {
+    public void toggleOperateState ()
+    {
         isOperateable = !isOperateable;
     }
 
     [PunRPC]
-    public void SetProfile (string name, string hobby, string fabFood) {
+    public void SetProfile (string name, string hobby, string fabFood)
+    {
         this.name = name;
         this.hobby = hobby;
         this.fabFood = fabFood;
     }
 
     [PunRPC]
-    void MoveStraight () {
-        if (moveTimer > moveInterval) {
+    void MoveStraight ()
+    {
+        if (moveTimer > moveInterval)
+        {
             transform.DOJump (new Vector3 (transform.position.x, 0, transform.position.z + 1), 1.0f, 1, 0.3f).SetEase (Ease.Linear); //jumpアニメーション
             moveTimer = 0;
         }
     }
 
-    public void InformNameToOthers () {
+    [PunRPC]
+    void ConveyAvatarsContorollerShake ()
+    {
+        avatarsController.MoveStraight ();
+    }
+
+    //その場でジャンプをする
+    [PunRPC]
+    void Jump ()
+    {
+        if (moveTimer > moveInterval)
+        {
+            transform.DOJump (new Vector3 (transform.position.x, 0, transform.position.z), 1.0f, 1, 0.3f).SetEase (Ease.Linear); //jumpアニメーション
+            moveTimer = 0;
+        }
+    }
+
+    public void InformNameToOthers ()
+    {
         photonView.RPC (nameof (DisplayName), RpcTarget.All);
     }
 
-    public void HideMyNameFromOthers () {
+    public void HideMyNameFromOthers ()
+    {
         photonView.RPC (nameof (HideName), RpcTarget.All);
     }
 
     [PunRPC]
-    void DisplayName () {
+    void DisplayName ()
+    {
         nameCanvas.SetActive (true);
     }
 
     [PunRPC]
-    void HideName () {
+    void HideName ()
+    {
         nameCanvas.SetActive (false);
     }
 
     [PunRPC]
-    void SetName (string name) {
+    void SetName (string name)
+    {
         this.name = name;
         displayNameText.text = name;
     }

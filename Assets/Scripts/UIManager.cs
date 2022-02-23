@@ -55,10 +55,18 @@ public class UIManager : MonoBehaviour
         HostStandbyUI.SetActive (false);
     }
 
+    public void StartCountDown ()
+    {
+        StartCoroutine ("CountDownCoroutine");
+    }
+
     IEnumerator CountDownCoroutine ()
     {
         countDownUI.SetActive (true);
-        yield return new WaitForSeconds (1.5f);
+        yield return new WaitForSeconds (1.0f);
+
+        countDownText.text = "4";
+        yield return new WaitForSeconds (1.0f);
 
         countDownText.text = "3";
         yield return new WaitForSeconds (1.0f);
@@ -69,10 +77,10 @@ public class UIManager : MonoBehaviour
         countDownText.text = "1";
         yield return new WaitForSeconds (1.0f);
 
-        // countDown.text = "スタート";
+        countDownText.text = "スタート";
         yield return new WaitForSeconds (1.0f);
 
-        // countDownUI.SetActive (false);
+        countDownUI.SetActive (false);
         gameController.GameStart ();
     }
 }

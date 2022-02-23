@@ -19,12 +19,22 @@ public class GameController : MonoBehaviourPunCallbacks
     public void GameStart ()
     {
         Debug.Log ("Game Start");
+        // プレイヤーの操作を可能にする
+        foreach (var player in players)
+        {
+            player.GetComponent<AvatarController> ().EnableOperation ();
+        }
+
     }
 
     public void StartIntroduction ()
     {
         photonView.RPC (nameof (IntroducePlayers), RpcTarget.All);
+    }
 
+    void StartCountDown ()
+    {
+        UIManager.StartCountDown ();
     }
 
     [PunRPC]
@@ -122,6 +132,7 @@ public class GameController : MonoBehaviourPunCallbacks
         for (int i = 0; i < players.Count; i++)
         {
             var player = GameObject.Find ($"Avatar{i+1}(Clone)");
+
             player.transform.Find ("VCam").gameObject.GetComponent<CinemachineVirtualCamera> ().enabled = true;
             yield return new WaitForSeconds (2);
 
@@ -133,13 +144,19 @@ public class GameController : MonoBehaviourPunCallbacks
             player.GetComponent<AvatarController> ().InformNameToOthers ();
         }
 
-        UIManager.IntroducePlayerUI.SetActive (false);
-
         foreach (var player in players)
         {
             player.transform.Find ("VCam").gameObject.GetComponent<CinemachineVirtualCamera> ().enabled = false;
-            // player.GetComponent<AvatarController> ().InformNameToOthers ();
         }
 
+        UIManager.IntroducePlayerUI.SetActive (false);
+        yield return new WaitForSeconds (2);
+
+        foreach (var player in players)
+        {
+            player.GetComponent<AvatarController> ().InformNameToOthers ();
+            player.transform.parent = avatars.transform;
+        }
+        StartCountDown ();
     }
 }

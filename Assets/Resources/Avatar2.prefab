@@ -559,7 +559,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1707842239382425959
 Transform:
   m_ObjectHideFlags: 0
@@ -608,9 +608,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GameController: {fileID: 0}
+  avatarsController: {fileID: 0}
   TPSCamera: {fileID: 1707842238723376297}
   displayNameText: {fileID: 1907782954}
-  isOperateable: 1
   nameCanvas: {fileID: 2031180163}
 --- !u!114 &1707842239382389781
 MonoBehaviour:
